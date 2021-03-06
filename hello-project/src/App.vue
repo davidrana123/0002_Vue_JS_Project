@@ -1,24 +1,42 @@
 <template>
- <h1>Hellow Vue Js</h1> 
- <Hello :homeTitle=" homeTitle" :allUsers="users"/>
+  <AddUser @add-user="storeUser"/>
+  <Show  :users="users"/> 
 </template>
 
 <script>
-import Hello from "./components/Hello"
-
+import AddUser from "./components/AddUser";
+import Show from "./components/Show";
+import axios from "axios"
 export default {
-  name: 'App',
+  name: "App",
   components: {
-   Hello
+    AddUser,
+    Show,
   },
   data(){
     return{
-       homeTitle: "Hello my first vue cli app",
-      users: ["david rana" ,"shuhana devi","jeenu rana"],
-      };
-      },
+      homeTitle: "Hello my first vue app",
+      users: [],
+    };
+  },
+  methods: {
+    storeUser: function(user){
+       this.users = [user,...this.users];
+    }, 
+  },
+  async created(){
+    try{
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+          );
+          console.log(response.data);
+    }catch(error){
+      console.log(error);
+    }
+  },
 };
 </script>
+
 
 <style>
 #app {
